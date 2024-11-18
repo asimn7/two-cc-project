@@ -23,7 +23,7 @@ func (r *Repository) SetupRoutes(app *fiber.App){
 	api.Post("/create_foods", r.CreateFood)
 	api.Delete("/delete_foods/:id", r.DeleteFood)
 	api.Get("/get_foods/:id", r.GetFoodById)
-	api.Get("/foods", r.GetFood)
+	api.Get("/foods", r.GetFoods)
 }
 
 //MARK: Food struct
@@ -61,7 +61,7 @@ func (r *Repository) CreateFood(c *fiber.Ctx) error{
 }
 
 //MARK: DeleteFood
-func (r *Repository) DeleteBook (c *fiber.Ctx) error{
+func (r *Repository) DeleteFood (c *fiber.Ctx) error{
 	foodModel := models.Foods{}
 
 	id := c.Params("id")
@@ -109,7 +109,7 @@ func (r *Repository) GetFoodById(c *fiber.Ctx) error{
 }
 
 //MARK: Get All Books
-func (r *Repository) GetBooks(c *fiber.Ctx) error{
+func (r *Repository) GetFoods(c *fiber.Ctx) error{
 	foodModels := &[]models.Foods{}
 
 	err := r.DB.Find(foodModels).Error
@@ -149,7 +149,7 @@ func main(){
 		log.Fatal("Error connecting to database")
 	}
 
-	err = models.MigrateBooks(db)
+	err = models.MigrateFoods(db)
 
 	if err != nil {
 		log.Fatal("Error migrating database")
@@ -161,5 +161,5 @@ func main(){
 
 	app := fiber.New()
 	r.SetupRoutes(app)
-	app.Listen(":8080")
+	app.Listen(":8083")
 }
